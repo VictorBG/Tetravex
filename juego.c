@@ -2,7 +2,7 @@
 #include "tablero.h"
 
 /*
- *
+ 
  * El fichero juego.c solo tiene la funcion: int main()
  * Dicha funcion:
  * Declara una variable de tipo t_tablero
@@ -37,7 +37,7 @@
 
 	De momento no os preocupeis por lo de simple o doble, yo ya modificaré el programa
 	para adaptarlo (es un extra)
-	
+
  */
 
 main() {
