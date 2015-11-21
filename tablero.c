@@ -21,10 +21,10 @@ void inicializar_tablero(t_tablero *tablero) {
 
 	//Preguntamos dimension
 	printf("\nTamaño del tablero (entre 2 y 6): ");
-	scanf("%d%*c", tablero->size);
+	scanf("%d%*c", &tablero->size);
 	while(tablero->size<0 || tablero->size > 6) {
 	  	printf("\nTamañno incorrecto, vuelva a introducirlo (min 2, max 6): ");
-	  	scanf("%d%*c", tablero->size);
+	  	scanf("%d%*c", &tablero->size);
 	 }
 
 	//Inicializamos variables
@@ -77,7 +77,7 @@ void desorganize(t_tablero *tablero) {
 		for (j=0;j<tablero->size;j++) {
 			//Desorganizar aqui
 			n=0;
-			while(n!=0) {
+			while(n!=1) {
 				x=numero_al_azar(tablero->size);
 				y=numero_al_azar(tablero->size);
 				if(matrix[x][y]==0 && x!=i && y!=j) {
