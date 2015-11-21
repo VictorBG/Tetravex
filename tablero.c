@@ -80,7 +80,7 @@ void desorganize(t_tablero *tablero) {
 			while(n!=1) {
 				x=numero_al_azar(tablero->size);
 				y=numero_al_azar(tablero->size);
-				if(matrix[x][y]==0 && x!=i && y!=j) {
+				if(matrix[x][y]==0 && x!=j && y!=i) {
 					//Poner aqui la casilla
 					t.c[x][y]=tablero->c[i][j];
 					n=1;
