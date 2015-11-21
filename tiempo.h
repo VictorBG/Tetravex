@@ -1,4 +1,4 @@
-#ifndef TIEMPO_H 
+#ifndef TIEMPO_H
 #define	TIEMPO_H
 
 /*

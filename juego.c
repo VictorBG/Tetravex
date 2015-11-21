@@ -2,7 +2,6 @@
 #include "tablero.h"
 
 /*
- 
  * El fichero juego.c solo tiene la funcion: int main()
  * Dicha funcion:
  * Declara una variable de tipo t_tablero
@@ -42,14 +41,34 @@
 
 main() {
   t_tablero tablero;
+  int opcion_menu=0;
 
-  inicializar_tablero(&tablero);
-  imprimir_tablero(tablero);
+  /*
 
-  while (!esta_resuelto(tablero)) {
-    realizar_jugada(&tablero);
-    imprimir_tablero(tablero);
-  }
-  printf("\nPuzzle resuelto!!!\n");
+  Creamos menu por si el usuario quiere volver a jugar al finalizar
+
+   */
+
+  do {
+		inicializar_tablero(&tablero);
+		imprimir_tablero(tablero);
+
+		while (!esta_resuelto(tablero)) {
+			realizar_jugada(&tablero);
+			imprimir_tablero(tablero);
+		}
+
+		printf("\nPuzzle resuelto!!!\n");
+
+		printf("\n\nMenu:\n1.Volver a jugar\nSalir");
+		scanf("%d",&opcion_menu);
+
+		while (opcion_menu<1 || opcion_menu > 2) {
+			printf("\nOpción incorrecta, escoga otra vez: ");
+			scanf("%d",&opcion_menu);
+		}
+
+  }while(opcion_menu!=2);
+
 }
 

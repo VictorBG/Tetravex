@@ -2,15 +2,15 @@
 #include <time.h>	// time()
 #include "tiempo.h"
 
-time_t start,end; 
+time_t start,end;
 
 void empieza_tiempo() {
 	time (&start);
 }
 
 double tiempo_transcurrido() {
-	time (&end); 
+	time (&end);
 
-	return difftime (end,start); 
+	return difftime (end,start);
 }
 

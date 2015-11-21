@@ -14,6 +14,6 @@ void inicializar_azar() {
 }
 
 int numero_al_azar(int max) {
-	return ( rand() % max); 
+	return ( rand() % max);
 }
 

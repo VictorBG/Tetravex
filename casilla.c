@@ -16,6 +16,9 @@ void imprimir_sur_casilla(t_casilla cas) {
 }
 
 void intercambiar_casillas(t_casilla *cas1, t_casilla *cas2) {
+	/*
+	Aqui intercambiamos las casillas
+	 */
 
 }
 
