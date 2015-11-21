@@ -80,7 +80,7 @@ void desorganize(t_tablero *tablero) {
 			while(n!=1) {
 				x=numero_al_azar(tablero->size);
 				y=numero_al_azar(tablero->size);
-				if(matrix[x][y]==0 && x!=j && y!=i) {
+				if(matrix[x][y]==0 && x!=i && y!=j) {
 					//Poner aqui la casilla
 					t.c[x][y]=tablero->c[i][j];
 					n=1;
@@ -141,7 +141,7 @@ void imprimir_tablero(t_tablero tablero) {
 				for(i3=0;i3<max;i3++)printf("+---");
 				printf("+");
 			}
-			printf("\n\nTiempo transcurrido: %ld",tiempo_transcurrido());
+			printf("\n\nTiempo transcurrido: %lf",tiempo_transcurrido());
 	}
 }
 
