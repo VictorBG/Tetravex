@@ -122,6 +122,8 @@ void imprimir_tablero(t_tablero tablero) {
 	int max=tablero->size;
 
 	//Este método lo reharé para los extras
+	//BUG!!
+	//NO IMPRIME TABLERO DOBLE, SOLUCIONAR!
 
 	char c='A';
 	int i,i3;
@@ -199,14 +201,19 @@ void resolver_tablero(t_tablero *tablero) {
 	int i,j;
 	t_tablero aux;
 	int fil,col;
+	int start=0;
+
+	if(tablero->tipo == 'D' || tablero->tipo == 'd') start=tablero->size;
+
+
 	for(fil=0;fil<=tablero->max_f;fil++) {
-		for(col=0;col<=tablero->max_c;col++) {
+		for(col=start;col<=tablero->max_c;col++) {
 			//Search element
 			for(i=0;i<=tablero->max_f; i++) {
-				for(j=0;j<=tablero->max_c;j++) {
+				for(j=start;j<=tablero->max_c;j++) {
 					if (tablero->c[i][j].co == col && tablero->c[i][j].fo == fil) {
 						//Swap element
-						printf("\nCasilla %c%d a posicion %c%d",(char)j+'A',i,(char)col+'A',fil);
+						printf("\nCasilla %c%d a posicion %c%d",(char)col+'A',fil,(char)j+'A',i);
 						aux=tablero->c[i][j];
 						tablero->c[i][j]=tablero->c[fil][col];
 						tablero->c[fil][col]=aux;

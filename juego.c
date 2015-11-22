@@ -46,6 +46,7 @@ main() {
   /*
 
   Creamos menu por si el usuario quiere volver a jugar al finalizar
+  Añadiremos dificultad, no se como pero lo haremos
 
    */
 
