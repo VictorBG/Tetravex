@@ -73,8 +73,8 @@ void desorganize(t_tablero *tablero) {
 	int matrix [6][12];
 	int i,j,n,x,y;
 
-	for(i=0;i<tablero->size;i++) {
-		for (j=0;j<tablero->size;j++) {
+	for(i=0;i<=tablero->max_f;i++) {
+		for (j=0;j<=tablero->max_c;j++) {
 			//Desorganizar aqui
 			n=0;
 			while(n!=1) {
@@ -92,8 +92,8 @@ void desorganize(t_tablero *tablero) {
 
 	//Poner tablero t.c en tablero-c (el t.c ya esta desorganizado);
 
-	for(i=0;i<tablero->size;i++) {
-		for (j=0;j<tablero->size;j++) {
+	for(i=0;i<=tablero->mac_f;i++) {
+		for (j=0;j<=tablero->max_c;j++) {
 			tablero->c[i][j]=t.c[i][j];
 		}
 	}
@@ -117,6 +117,8 @@ void imprimir_tablero(t_tablero tablero) {
 	//Cambio de variable
 	t_tablero board=tablero;
 	int max=tablero->size;
+
+	//Este método lo reharé para los extras
 
 	char c='A';
 	int i,i3;
@@ -167,6 +169,13 @@ void realizar_jugada(t_tablero *tablero) {
 	intercambiarlas después.
 
 	*/
+
+	/*
+
+	if(letra1=='z' || letra1 == 'Z') {
+		resolver_tablero(tablero);
+	}
+	*/
 }
 
 int esta_resuelto(t_tablero tablero) {
@@ -178,5 +187,31 @@ int esta_resuelto(t_tablero tablero) {
 	devolviendo un 0. En caso contrario devolver un 1 al final del archivo.
 
 	*/
+
+
 }
+
+//Extra
+void resolver_tablero(t_tablero *tablero) {
+	int i,j;
+	t_tablero aux;
+	int fil,col;
+	for(fil=0;fil<=tablero->max_f;fil++) {
+		for(col=0;col<=tablero->max_c;col++) {
+			//Search element
+			for(i=0;i<=tablero->max_f; i++) {
+				for(j=0;j<=tablero->max_c;j++) {
+					if (tablero->c[i][j].co == col && tablero->c[i][j].fo == fil) {
+						//Swap element
+						printf("\nCasilla %c%d a posicion %c%d",(char)j+'A',i,(char)col+'A',fil);
+						aux=tablero->c[i][j];
+						tablero->c[i][j]=tablero->c[fil][col];
+						tablero->c[fil][col]=aux;
+					}
+				}
+			}
+		}
+	}
+}
+
 
