@@ -22,6 +22,7 @@ void inicializar_tablero(t_tablero *tablero) {
 	//Preguntamos dimension
 	printf("\nTamaño del tablero (entre 2 y 6): ");
 	scanf("%d%*c", &tablero->size);
+
 	while(tablero->size<0 || tablero->size > 6) {
 	  	printf("\nTamañno incorrecto, vuelva a introducirlo (min 2, max 6): ");
 	  	scanf("%d%*c", &tablero->size);
@@ -70,7 +71,7 @@ void crear_tablero(t_tablero *tablero) {
 void desorganize(t_tablero *tablero) {
 
 	t_tablero t; //Aqui guardamos el tablero desorganizado, despues lo pondremos en su struct
-	int matrix [6][12];
+	int matrix [6][6];
 	int i,j,n,x,y;
 
 	for(i=0;i<=tablero->max_f;i++) {
@@ -90,11 +91,13 @@ void desorganize(t_tablero *tablero) {
 		}
 	}
 
+	int start=0;
 	//Poner tablero t.c en tablero-c (el t.c ya esta desorganizado);
+	if(tablero->tipo == 'D' || tablero->tipo == 'd') start=tablero->size;
 
 	for(i=0;i<=tablero->mac_f;i++) {
-		for (j=0;j<=tablero->max_c;j++) {
-			tablero->c[i][j]=t.c[i][j];
+		for (j=start;j<=tablero->max_c;j++) {
+			tablero->c[i][j]=t.c[i][j-(tablero->size)];
 		}
 	}
 
