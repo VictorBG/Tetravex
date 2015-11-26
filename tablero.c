@@ -26,14 +26,22 @@ void inicializar_tablero(t_tablero *tablero) {
 	while(tablero->size<0 || tablero->size > 6) {
 	  	printf("\nTamañno incorrecto, vuelva a introducirlo (min 2, max 6): ");
 	  	scanf("%d%*c", &tablero->size);
-	 }
+	}
+
+	/*printf("\nTablero doble o simple (d o s): ");
+	scanf("%c%*c", &tablero->tipo);
+	while (tablero->tipo != 's' || tablero->tipo!= 'S'
+		|| tablero->tipo!='d' || tablero->tipo!='D') {
+		printf("\nVariable incorrecta, vuelva a introducirla (c o d): ");
+	  	scanf("%c%*c", &tablero->tipo);
+	}*/
 
 	//Inicializamos variables
 	//Tablero simple por ahora
 
-	 tablero->max_f=tablero->size-1;
-	 tablero->max_c=tablero->size-1;
-	 tablero->tipo='s'; //Simple
+	tablero->tipo='s'; //Simple
+	tablero->max_f=tablero->size-1;
+	tablero->max_c=(tablero->tipo=='d' || tablero->tipo=='D')?tablero->max_f*2:max_f;
 
 	/*
 	max_c indica el número máximo de columnas (en caso de que el tamaño sea
@@ -91,13 +99,15 @@ void desorganize(t_tablero *tablero) {
 		}
 	}
 
-	int start=0;
 	//Poner tablero t.c en tablero-c (el t.c ya esta desorganizado);
-	if(tablero->tipo == 'D' || tablero->tipo == 'd') start=tablero->size;
+	int start=(tablero->tipo == 'D' || tablero->tipo == 'd')tablero->size:0;
 
 	for(i=0;i<=tablero->mac_f;i++) {
 		for (j=start;j<=tablero->max_c;j++) {
-			tablero->c[i][j]=t.c[i][j-(tablero->size)];
+			if(tablero->tipo == 'D' || tablero->tipo == 'd')
+				tablero->c[i][j]=t.c[i][j-(tablero->size)];
+			else
+				tablero->c[i][j]=t.c[i][j];
 		}
 	}
 
@@ -117,44 +127,59 @@ void imprimir_tablero(t_tablero tablero) {
 	   |/0\
 	*/
 
-	//Cambio de variable
-	t_tablero board=tablero;
-	int max=tablero->size;
+	int col, fil;
 
-	//Este método lo reharé para los extras
-	//BUG!!
-	//NO IMPRIME TABLERO DOBLE, SOLUCIONAR!
-
-	char c='A';
-	int i,i3;
-	printf("\n");
-	for (i=0;i<max;i++) {
-			if(i==0)for(i3=0;i3<max;i3++)printf("  %c ",(c+i3));
-			printf("\n");
-			for(i3=0;i3<max;i3++)printf("+---");
-			printf("+");
-			printf("\n");
-			for(i3=0;i3<max;i3++){printf("|\\");color(board[i][i3].t);printf("/");}
-			printf("|");
-			printf("\n");
-			for(i3=0;i3<max;i3++){printf("|");color(board[i][i3].l);printf("x");color(board[i][i3].r);}
-			printf("|");
-			printf("  %d",i);
-			printf("\n");
-			for(i3=0;i3<max;i3++){printf("|/");color(board[i][i3].b);printf("\\");}
-			printf("|");
-			if(i==(max-1)) {
-				printf("\n");
-				for(i3=0;i3<max;i3++)printf("+---");
-				printf("+");
-			}
-			printf("\n\nTiempo transcurrido: %lf",tiempo_transcurrido());
+	if(tablero.tipo== 's' || tablero.tipo == 'S') {
+		//Simple
+		fil=tablero.max_f;
+		col=fil;
+	} else {
+		fil=tablero.max_f;
+		col=fil*2;
 	}
-}
+	//Letra a mostrar
+	char c='A';
 
-void color(int x) {
-	printf_color(x);
-	printf_reset_color();
+	int i,j;
+	printf("\n");
+	for (i=0;i<fil;i++) {
+		//Imprimimos letras
+		//Imprimimos letras
+		if(i==0) {
+			for(j=0;j<col;j++) {
+				printf("  %c ",(c+j));
+			}
+			printf("\n");
+		}
+		//Imprimimos parte superior tablero
+		for(j=0;j<col;j++) {
+			printf("+---");
+		}
+		printf("+\n");
+
+		//Imprimimos norte tablero
+		for(j=0;j<col;j++) {
+			imprimir_norte_casilla(tablero.c[i][j]);
+		}
+		printf("|\n");
+
+		//Imprimimos centro tablero
+		for(j=0;j<col;j++) {
+			imprimir_centro_casilla(tablero.c[i][j]);
+		}
+		printf("|  %d\n",i);
+
+		//Imprimimos sur tablero
+		for(j=0;j<col;j++) {
+			imprimir_sur_casilla(tablero.c[i][j]);
+		}
+		printf("|\n");
+	}
+	for(j=0;j<col;j++)printf("+---");
+	printf("+");
+
+
+	printf("\n\nTiempo transcurrido: %.2lf",tiempo_transcurrido());
 }
 
 void realizar_jugada(t_tablero *tablero) {
