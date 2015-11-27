@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "tablero.h"
+#include "tiempo.h"
 
 /*
  * El fichero juego.c solo tiene la funcion: int main()
@@ -39,9 +40,11 @@
 
  */
 
+
+
 main() {
   t_tablero tablero;
-  int opcion_menu=0;
+  unsigned int opcion_menu=0;
 
   /*
 
@@ -59,17 +62,20 @@ main() {
 			imprimir_tablero(tablero);
 		}
 
+		puntuacion=(int)tiempo_transcurrido();
+
 		printf("\nPuzzle resuelto!!!\n");
 
-		printf("\n\nMenu:\n1.Volver a jugar\nSalir");
-		scanf("%d",&opcion_menu);
+		printf("\n\nMenu:\n1.Volver a jugar\n2.Salir");
+		scanf("%u",&opcion_menu);
 
-		while (opcion_menu<1 || opcion_menu > 2) {
+		while (opcion_menu<1 || opcion_menu> 2) {
 			printf("\nOpción incorrecta, escoga otra vez: ");
-			scanf("%d",&opcion_menu);
+			scanf("%u",&opcion_menu);
 		}
 
   }while(opcion_menu!=2);
 
 }
+
 
