@@ -59,10 +59,12 @@ main() {
 
 		while (!esta_resuelto(tablero)) {
 			realizar_jugada(&tablero);
+			//Erase shell cmd on unix
+			system("clear");
+			//Erase cmd shell on windows
+			//system("cls");
 			imprimir_tablero(tablero);
 		}
-
-		puntuacion=(int)tiempo_transcurrido();
 
 		printf("\nPuzzle resuelto!!!\n");
 
