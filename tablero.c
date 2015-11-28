@@ -39,7 +39,7 @@ void inicializar_tablero(t_tablero *tablero) {
 	//Inicializamos variables
 	//Tablero simple por ahora
 
-	tablero->tipo='s'; //Simple
+	tablero->tipo='s'; //Simple, de momento
 	tablero->max_f=tablero->size-1;
 	tablero->max_c=(tablero->tipo=='d' || tablero->tipo=='D')?tablero->max_f*2:max_f;
 

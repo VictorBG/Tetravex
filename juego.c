@@ -69,11 +69,11 @@ main() {
 		printf("\nPuzzle resuelto!!!\n");
 
 		printf("\n\nMenu:\n1.Volver a jugar\n2.Salir");
-		scanf("%u",&opcion_menu);
+		scanf("%u%*c",&opcion_menu);
 
-		while (opcion_menu<1 || opcion_menu> 2) {
+		while (opcion_menu<1 || opcion_menu>2) {
 			printf("\nOpción incorrecta, escoga otra vez: ");
-			scanf("%u",&opcion_menu);
+			scanf("%u%*c",&opcion_menu);
 		}
 
   }while(opcion_menu!=2);
