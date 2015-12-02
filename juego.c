@@ -59,7 +59,7 @@ main() {
 
 		while (!esta_resuelto(tablero)) {
 			realizar_jugada(&tablero);
-			//Erase shell cmd on unix
+			//Erase cmd shell on unix
 			system("clear");
 			//Erase cmd shell on windows
 			//system("cls");

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "azar.h"
 #include "tiempo.h"
 #include "tablero.h"
