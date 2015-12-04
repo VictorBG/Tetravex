@@ -12,6 +12,11 @@ comprendido entre 0-9
 
 */
 
+void casilla_norte(t_tablero *tablero, int i,int j);
+void casilla_sur(t_tablero *tablero, int i,int j);
+void casilla_este(t_tablero *tablero, int i,int j);
+void casilla_oeste(t_tablero *tablero, int i,int j);
+
 int randNum() {
 	return (numero_al_azar(10));
 }
@@ -29,18 +34,18 @@ void inicializar_tablero(t_tablero *tablero) {
 	  	scanf("%d%*c", &tablero->size);
 	}
 
-	/*printf("\nTablero doble o simple (d o s): ");
+	printf("\nTablero doble o simple (d o s): ");
 	scanf("%c%*c", &tablero->tipo);
 	while (tablero->tipo != 's' || tablero->tipo!= 'S'
 		|| tablero->tipo!='d' || tablero->tipo!='D') {
 		printf("\nVariable incorrecta, vuelva a introducirla (c o d): ");
 	  	scanf("%c%*c", &tablero->tipo);
-	}*/
+	}
 
 	//Inicializamos variables
 	//Tablero simple por ahora
 
-	tablero->tipo='s'; //Simple, de momento
+	/*tablero->tipo='s'; //Simple, de momento*/
 	tablero->max_f=tablero->size-1;
 	tablero->max_c=(tablero->tipo=='d' || tablero->tipo=='D')?tablero->max_f*2:max_f;
 
@@ -75,6 +80,36 @@ void inicializar_tablero(t_tablero *tablero) {
 
 void crear_tablero(t_tablero *tablero) {
 	//Crear tablero aqui
+	int i, j;
+	for (i=0; i<tablero->size; i++){
+         	for (j=0; j<tablero->size; j++){
+				casilla_norte(tablero, i, j);
+				casilla_sur(tablero, i, j);
+				casilla_este(tablero, i, j);
+	 			casilla_oeste(tablero, i, j);
+				tablero->c[i][j].fo=i;
+				tablero->c[i][j].co=j;
+       		}
+	}
+}
+
+void casilla_norte(t_tablero *tablero, int i,int j){
+	if (i==0)
+ 	  tablero->c[i][j].n=randNum();
+	else
+	  tablero->c[i][j].n=tablero->c[i-1][j].s;
+}
+void casilla_sur(t_tablero *tablero, int i, int j){
+	tablero->c[i][j].s=randNum();
+}
+void casilla_este(t_tablero *tablero, int i, int j){
+	tablero->c[i][j].e=randNum();
+}
+void casilla_oeste(t_tablero *tablero, int i, int j){
+	if (j==0)
+	  tablero->c[i][j].o=randNum();
+	else
+	  tablero->c[i][j].o=tablero->c[i][j-1].e;
 }
 
 void desorganize(t_tablero *tablero) {
@@ -82,15 +117,17 @@ void desorganize(t_tablero *tablero) {
 	t_tablero t; //Aqui guardamos el tablero desorganizado, despues lo pondremos en su struct
 	int matrix [6][6];
 	int i,j,n,x,y;
+	for(i=0;i<6;i++){for(j=0;j<6;j++)matrix[i][j]=0;}
 
-	for(i=0;i<=tablero->max_f;i++) {
-		for (j=0;j<=tablero->max_c;j++) {
+	for(i=0;i<tablero->size;i++) {
+		n=0;
+		for (j=0;j<tablero->size;j++) {
 			//Desorganizar aqui
 			n=0;
 			while(n!=1) {
 				x=numero_al_azar(tablero->size);
 				y=numero_al_azar(tablero->size);
-				if(matrix[x][y]==0 && x!=i && y!=j) {
+				if(matrix[x][y]==0) {
 					//Poner aqui la casilla
 					t.c[x][y]=tablero->c[i][j];
 					n=1;
@@ -101,22 +138,15 @@ void desorganize(t_tablero *tablero) {
 	}
 
 	//Poner tablero t.c en tablero-c (el t.c ya esta desorganizado);
-	int start=(tablero->tipo == 'D' || tablero->tipo == 'd')tablero->size:0;
-
-	for(i=0;i<=tablero->mac_f;i++) {
-		for (j=start;j<=tablero->max_c;j++) {
-			if(tablero->tipo == 'D' || tablero->tipo == 'd')
-				tablero->c[i][j]=t.c[i][j-(tablero->size)];
-			else
+	for(i=0;i<tablero->size;i++) {
+		for (j=0;j<tablero->size;j++) {
 				tablero->c[i][j]=t.c[i][j];
 		}
 	}
 
 	/*
-
 	Ya tenemos el tablero desorganizado. Las posiciones originales se
 	guardan en los valores de "co" y "fo" de cada casilla
-
 	 */
 }
 
@@ -156,20 +186,20 @@ void imprimir_tablero(t_tablero tablero) {
 		for(j=0;j<col;j++) {
 			//printf("+---");
 			if(j==0 && i==0) {
-				printf("%c%c%c%c", (char)201, (char)205,(char)205,(char)205);
+				printf("╔═══");
 			} else  if (j==0) {
-				printf("%c%c%c%c", (char)204, (char)205,(char)205,(char)205);
+				printf("╠═══");
 			} else if (i==0) {
-				printf("%c%c%c%c", (char)203, (char)205,(char)205,(char)205);
+				printf("╦═══");
 			} else {
-				printf("%c%c%c%c", (char)206, (char)205,(char)205,(char)205);
+				printf("╬═══");
 			}
 		}
 		//printf("+\n");
 		if(i==0) {
-			printf("%c\n", (char)187);
+			printf("╗\n");
 		} else {
-			printf("%c\n", (char)185);
+			printf("╣\n");
 		}
 
 		//Imprimimos norte tablero
@@ -177,35 +207,35 @@ void imprimir_tablero(t_tablero tablero) {
 			imprimir_norte_casilla(tablero.c[i][j]);
 		}
 		//printf("|\n");
-		printf("%c\n", (char)186);
+		printf("║\n");
 
 		//Imprimimos centro tablero
 		for(j=0;j<col;j++) {
 			imprimir_centro_casilla(tablero.c[i][j]);
 		}
 		//printf("|  %d\n",i);
-		printf("%c  %d\n", (char)186, i);
+		printf("║  %d\n", i);
 
 		//Imprimimos sur tablero
 		for(j=0;j<col;j++) {
 			imprimir_sur_casilla(tablero.c[i][j]);
 		}
 		//printf("|\n");
-		printf("%c\n", (char)186);
+		printf("║\n");
 	}
 	for(j=0;j<col;j++) {
 		//printf("+---");
-			if(j==0) {
-				printf("%c%c%c%c", (char)200, (char)205,(char)205,(char)205);
-			} else {
-				printf("%c%c%c%c", (char)202, (char)205,(char)205,(char)205);
-			}
+		if(j==0) {
+			printf("╚═══");
+		} else {
+			printf("╩═══");
 		}
+	}
 	//printf("+");
-	printf("%c", (char)188);
-
-
+	printf("╝");
 	printf("\n\nTiempo transcurrido: %.2lf",tiempo_transcurrido());
+
+
 }
 
 void realizar_jugada(t_tablero *tablero) {
@@ -243,36 +273,56 @@ int esta_resuelto(t_tablero tablero) {
 	devolviendo un 0. En caso contrario devolver un 1 al final del archivo.
 
 	*/
+	int i,j;
+	for (i=0;i<tablero.size;i++){
+		for(j=0;j<tablero.size;j++){
+			if(i!= tablero.c[i][j].fo || j!= tablero.c[i][j].co){
+				return 0;
+			}
+		}
+	}
+	return 1;
 
 
 }
 
-//Extra
 void resolver_tablero(t_tablero *tablero) {
-	int i,j;
-	t_tablero aux;
+	int i,j,y;
+	t_casilla aux;
 	int fil,col;
 	int start=0;
 
 	if(tablero->tipo == 'D' || tablero->tipo == 'd') start=tablero->size;
 
 
-	for(fil=0;fil<=tablero->max_f;fil++) {
-		for(col=start;col<=tablero->max_c;col++) {
+	for(fil=0;fil<tablero->size;fil++) {
+		for(col=0;col<tablero->size;col++) {
 			//Search element
-			for(i=0;i<=tablero->max_f; i++) {
-				for(j=start;j<=tablero->max_c;j++) {
-					if (tablero->c[i][j].co == col && tablero->c[i][j].fo == fil) {
-						//Swap element
-						printf("\nCasilla %c%d a posicion %c%d",(char)col+'A',fil,(char)j+'A',i);
-						aux=tablero->c[i][j];
-						tablero->c[i][j]=tablero->c[fil][col];
-						tablero->c[fil][col]=aux;
+			y=0;
+			for(i=0;i<tablero->max_f; i++) {
+				if(y==0) {
+					for(j=0;j<tablero->max_c;j++) {
+						//printf("\nfil %d col %d i%d j%d",fil,col,i,j);
+						if (tablero->c[i][j].co == col && tablero->c[i][j].fo == fil && y==0) {
+							//Swap element
+							aux=tablero->c[i][j];
+							tablero->c[i][j]=tablero->c[fil][col];
+							tablero->c[fil][col]=aux;
+							system("cls");
+							printf("\nCasilla %c%d a posicion %c%d\n\n",(char)j+'A',i,(char)col+'A',fil);
+							imprimir_tablero(*tablero);
+							double t=tiempo_transcurrido();
+							//Delay to show the changes
+							while(t==tiempo_transcurrido());
+							y=1;
+						}
 					}
 				}
 			}
 		}
 	}
+
+
 }
 
 

@@ -4,7 +4,7 @@
 
 
 void imprimir_norte_casilla(t_casilla cas) {
-	printf("%c\\", (char)186);
+	printf("║\\");
 	//color(cas.n);
 	printf("%d",cas.n);
 	printf("/");
@@ -12,7 +12,7 @@ void imprimir_norte_casilla(t_casilla cas) {
 }
 
 void imprimir_centro_casilla(t_casilla cas) {
-	printf("%c", (char)186);
+	printf("║");
 	printf("%d",cas.o);
 	//olor(board[i][i3].l);
 	printf("%c", (char)88);
@@ -21,7 +21,7 @@ void imprimir_centro_casilla(t_casilla cas) {
 }
 
 void imprimir_sur_casilla(t_casilla cas) {
-	printf("%c/", (char)186);
+	printf("║/");
 	//color(board[i][i3].b);
 	printf("%d",cas.s);
 	printf("\\");
