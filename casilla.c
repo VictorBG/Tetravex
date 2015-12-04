@@ -5,25 +5,25 @@
 
 void imprimir_norte_casilla(t_casilla cas) {
 	printf("║\\");
-	//color(cas.n);
-	printf("%d",cas.n);
+	color(cas.n);
+	//printf("%d",cas.n);
 	printf("/");
 
 }
 
 void imprimir_centro_casilla(t_casilla cas) {
 	printf("║");
-	printf("%d",cas.o);
-	//olor(board[i][i3].l);
+	//printf("%d",cas.o);
+	color(cas.o);
 	printf("%c", (char)88);
-	printf("%d",cas.e);
-	//color(board[i][i3].r);
+	//printf("%d",cas.e);
+	color(cas.e);
 }
 
 void imprimir_sur_casilla(t_casilla cas) {
 	printf("║/");
-	//color(board[i][i3].b);
-	printf("%d",cas.s);
+	color(cas.s);
+	//printf("%d",cas.s);
 	printf("\\");
 }
 
@@ -31,6 +31,9 @@ void intercambiar_casillas(t_casilla *cas1, t_casilla *cas2) {
 	/*
 	Aqui intercambiamos las casillas
 	 */
+	t_casilla aux=*cas1;
+	*cas1=*cas2;
+	*cas2=aux;
 
 }
 
