@@ -279,7 +279,7 @@ void realizar_jugada(t_tablero *tablero) {
 /*
 void pista(t_tablero *tablero, char c, int n) {
 	if(tablero->pistas!=0) {
-		printf("\nPosicion correcta de %c%d -> %c%d", c,n, (char)tablero->c[n][c].co,(char)tablero->c[n][c].fo);
+		printf("\nPosicion correcta de %c%d -> %c%d", c,n, (char)tablero->c[n][c].co + 'A' ,tablero->c[n][c].fo);
 		tablero->pistas--;
 	} else printf("\nNo te quedan pistas");
 }
