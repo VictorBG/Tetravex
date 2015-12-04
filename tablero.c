@@ -25,6 +25,17 @@ void inicializar_tablero(t_tablero *tablero) {
 	empieza_tiempo();
 	inicializar_azar();
 
+	for(i=0;i<6;i++) {
+		for (j=0;j<12;j++) {
+			t.c[i][j].n=-1;
+			t.c[i][j].s=-1;
+			t.c[i][j].e=-1;
+			t.c[i][j].o=-1;
+			t.c[i][j].fo=i;
+			t.c[i][j].co=j;
+		}
+	}
+
 	//Preguntamos dimension
 	printf("\nTamaño del tablero (entre 2 y 6): ");
 	scanf("%d%*c", &tablero->size);
