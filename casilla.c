@@ -36,6 +36,11 @@ void intercambiar_casillas(t_casilla *cas1, t_casilla *cas2) {
 
 void color(int x) {
 	printf_color(x);
+	if(num==-1) {
+		printf(" ");
+	}else {
+		printf("%d",num);
+	}
 	printf_reset_color();
 }
 
