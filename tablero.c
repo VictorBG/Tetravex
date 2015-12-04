@@ -12,10 +12,6 @@ comprendido entre 0-9
 
 */
 
-void casilla_norte(t_tablero *tablero, int i,int j);
-void casilla_sur(t_tablero *tablero, int i,int j);
-void casilla_este(t_tablero *tablero, int i,int j);
-void casilla_oeste(t_tablero *tablero, int i,int j);
 
 int randNum() {
 	return (numero_al_azar(10));
@@ -57,6 +53,7 @@ void inicializar_tablero(t_tablero *tablero) {
 	//Tablero simple por ahora
 
 	/*tablero->tipo='s'; //Simple, de momento*/
+	tablero->pistas=tablero->size*tablero->size/5;
 	tablero->max_f=tablero->size-1;
 	tablero->max_c=(tablero->tipo=='d' || tablero->tipo=='D')?tablero->max_f*2:max_f;
 
@@ -267,13 +264,26 @@ void realizar_jugada(t_tablero *tablero) {
 
 	*/
 
+	/*if(letra1==letra2 && numero1==numero2) {
+		pista(tablero, letra1, numero1);
+	}
+
 	/*
 
-	if(letra1=='z' || letra1 == 'Z') {
+	if((letra1=='z' || letra1 == 'Z') && (letra2=='z' || letra2=='Z')) {
 		resolver_tablero(tablero);
 	}
 	*/
 }
+
+/*
+void pista(t_tablero *tablero, char c, int n) {
+	if(tablero->pistas!=0) {
+		printf("\nPosicion correcta de %c%d -> %c%d", c,n, (char)tablero->c[n][c].co,(char)tablero->c[n][c].fo);
+		tablero->pistas--;
+	} else printf("\nNo te quedan pistas");
+}
+*/
 
 int esta_resuelto(t_tablero tablero) {
 	/* Víctor
