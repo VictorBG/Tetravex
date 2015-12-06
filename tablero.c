@@ -17,90 +17,6 @@ int randNum() {
 	return (numero_al_azar(10));
 }
 
-void inicializar_tablero(t_tablero *tablero) {
-	empieza_tiempo();
-	inicializar_azar();
-
-	for(i=0;i<6;i++) {
-		for (j=0;j<12;j++) {
-			t.c[i][j].n=-1;
-			t.c[i][j].s=-1;
-			t.c[i][j].e=-1;
-			t.c[i][j].o=-1;
-			t.c[i][j].fo=i;
-			t.c[i][j].co=j;
-		}
-	}
-
-	//Preguntamos dimension
-	printf("\nTamaño del tablero (entre 2 y 6): ");
-	scanf("%d%*c", &tablero->size);
-
-	while(tablero->size<0 || tablero->size > 6) {
-	  	printf("\nTamañno incorrecto, vuelva a introducirlo (min 2, max 6): ");
-	  	scanf("%d%*c", &tablero->size);
-	}
-
-	printf("\nTablero doble o simple (d o s): ");
-	scanf("%c%*c", &tablero->tipo);
-	while (tablero->tipo != 's' || tablero->tipo!= 'S'
-		|| tablero->tipo!='d' || tablero->tipo!='D') {
-		printf("\nVariable incorrecta, vuelva a introducirla (c o d): ");
-	  	scanf("%c%*c", &tablero->tipo);
-	}
-
-	//Inicializamos variables
-	//Tablero simple por ahora
-
-	/*tablero->tipo='s'; //Simple, de momento*/
-	tablero->pistas=tablero->size*tablero->size/5;
-	tablero->max_f=tablero->size-1;
-	tablero->max_c=(tablero->tipo=='d' || tablero->tipo=='D')?tablero->max_f*2:max_f;
-
-	/*
-	max_c indica el número máximo de columnas (en caso de que el tamaño sea
-	3 este valor almacena un 0, por lo tanto los fors van hasta <=max_c);
-
-	max_f lo mismo pero con las filas
-
-	*/
-
-
-	/*
-		Víctor
-
-	  	Primero preguntamos por la dimension y la guardamos en la
-	  	variable "size".
-
-		Aquí debemos crear el tablero ordenado.
-		Para ello hay que guardar la posicion ((i,j) o (x,y),
-		depende de como las llameis) en tablero->fo (fila original)
-		y tablero->co (columna original). Esto nos servira para los extras también.
-
-		Al final llamar al método desorganize(tablero)
-
-	*/
-
-	//Recuerda siempre entrar al struct con tablero->(nombre variable dentro del struct)
-	crear_tablero(tablero);
-	desorganize(tablero);
-}
-
-void crear_tablero(t_tablero *tablero) {
-	//Crear tablero aqui
-	int i, j;
-	for (i=0; i<tablero->size; i++){
-         	for (j=0; j<tablero->size; j++){
-				casilla_norte(tablero, i, j);
-				casilla_sur(tablero, i, j);
-				casilla_este(tablero, i, j);
-	 			casilla_oeste(tablero, i, j);
-				tablero->c[i][j].fo=i;
-				tablero->c[i][j].co=j;
-       		}
-	}
-}
-
 void casilla_norte(t_tablero *tablero, int i,int j){
 	if (i==0)
  	  tablero->c[i][j].n=randNum();
@@ -158,6 +74,106 @@ void desorganize(t_tablero *tablero) {
 	 */
 }
 
+void crear_tablero(t_tablero *tablero) {
+	//Crear tablero aqui
+	int i, j;
+	for (i=0; i<tablero->size; i++){
+         	for (j=0; j<tablero->size; j++){
+				casilla_norte(tablero, i, j);
+				casilla_sur(tablero, i, j);
+				casilla_este(tablero, i, j);
+	 			casilla_oeste(tablero, i, j);
+				tablero->c[i][j].fo=i;
+				tablero->c[i][j].co=j;
+       		}
+	}
+}
+
+void tablero_doble(t_tablero *t) {
+	int i,j, n=t->size;
+	t_casilla cas1, cas2;
+	if(t->tipo== 'd' || t->tipo=='D') {
+		//Doble
+		for(i=0;i<t->size;i++) {
+			for (j=0;j<t->size;j++) {
+				intercambiar_casillas(&(t->c[i][j]), &(t->c[i][j+n]));
+			}
+		}
+	}
+}
+
+
+void inicializar_tablero(t_tablero *tablero) {
+	inicializar_azar();
+	int i,j;
+
+	for(i=0;i<6;i++) {
+		for (j=0;j<12;j++) {
+			tablero->c[i][j].n=-1;
+			tablero->c[i][j].s=-1;
+			tablero->c[i][j].e=-1;
+			tablero->c[i][j].o=-1;
+			tablero->c[i][j].fo=i;
+			tablero->c[i][j].co=j;
+		}
+	}
+
+	//Preguntamos dimension
+	printf("\nTamaño del tablero (entre 2 y 6): ");
+	scanf("%d%*c", &tablero->size);
+
+	while(tablero->size<0 || tablero->size > 6) {
+	  	printf("\nTamañno incorrecto, vuelva a introducirlo (min 2, max 6): ");
+	  	scanf("%d%*c", &tablero->size);
+	}
+
+	printf("\nTablero doble o simple (d o s): ");
+	scanf("%c%*c", &tablero->tipo);
+	while (tablero->tipo != 's' && tablero->tipo!= 'S'
+		&& tablero->tipo!='d' && tablero->tipo!='D') {
+		printf("\nVariable incorrecta, vuelva a introducirla (s o d): ");
+	  	scanf("%c%*c", &tablero->tipo);
+	}
+
+	//Inicializamos variables
+	//Tablero simple por ahora
+
+	/*tablero->tipo='s'; //Simple, de momento*/
+	tablero->pistas=tablero->size*tablero->size/5;
+	tablero->max_f=tablero->size;
+	tablero->max_c=(tablero->tipo=='d' || tablero->tipo=='D')?tablero->max_f*2:tablero->max_f;
+
+	/*
+	max_c indica el número máximo de columnas (en caso de que el tamaño sea
+	3 este valor almacena un 0, por lo tanto los fors van hasta <=max_c);
+
+	max_f lo mismo pero con las filas
+
+	*/
+
+
+	/*
+		Víctor
+
+	  	Primero preguntamos por la dimension y la guardamos en la
+	  	variable "size".
+
+		Aquí debemos crear el tablero ordenado.
+		Para ello hay que guardar la posicion ((i,j) o (x,y),
+		depende de como las llameis) en tablero->fo (fila original)
+		y tablero->co (columna original). Esto nos servira para los extras también.
+
+		Al final llamar al método desorganize(tablero)
+
+	*/
+
+	//Recuerda siempre entrar al struct con tablero->(nombre variable dentro del struct)
+	crear_tablero(tablero);
+	desorganize(tablero);
+	tablero_doble(tablero);
+	empieza_tiempo();
+}
+
 
 void imprimir_tablero(t_tablero tablero) {
 	/* +---(4)
@@ -174,7 +190,7 @@ void imprimir_tablero(t_tablero tablero) {
 		col=fil;
 	} else {
 		fil=tablero.max_f;
-		col=fil*2;
+		col=tablero.max_c;
 	}
 	//Letra a mostrar
 	char c='A';
@@ -182,7 +198,6 @@ void imprimir_tablero(t_tablero tablero) {
 	int i,j;
 	printf("\n");
 	for (i=0;i<fil;i++) {
-		//Imprimimos letras
 		//Imprimimos letras
 		if(i==0) {
 			for(j=0;j<col;j++) {
@@ -194,20 +209,20 @@ void imprimir_tablero(t_tablero tablero) {
 		for(j=0;j<col;j++) {
 			//printf("+---");
 			if(j==0 && i==0) {
-				printf("╔═══");
+				printf("%c%c%c%c", (char)201, (char)205,(char)205,(char)205);
 			} else  if (j==0) {
-				printf("╠═══");
+				printf("%c%c%c%c", (char)204, (char)205,(char)205,(char)205);
 			} else if (i==0) {
-				printf("╦═══");
+				printf("%c%c%c%c", (char)203, (char)205,(char)205,(char)205);
 			} else {
-				printf("╬═══");
+				printf("%c%c%c%c", (char)206, (char)205,(char)205,(char)205);
 			}
 		}
 		//printf("+\n");
 		if(i==0) {
-			printf("╗\n");
+			printf("%c\n", (char)187);
 		} else {
-			printf("╣\n");
+			printf("%c\n", (char)185);
 		}
 
 		//Imprimimos norte tablero
@@ -215,35 +230,84 @@ void imprimir_tablero(t_tablero tablero) {
 			imprimir_norte_casilla(tablero.c[i][j]);
 		}
 		//printf("|\n");
-		printf("║\n");
+		printf("%c\n", (char)186);
 
 		//Imprimimos centro tablero
 		for(j=0;j<col;j++) {
 			imprimir_centro_casilla(tablero.c[i][j]);
 		}
 		//printf("|  %d\n",i);
-		printf("║  %d\n", i);
+		printf("%c  %d\n", (char)186, i);
 
 		//Imprimimos sur tablero
 		for(j=0;j<col;j++) {
 			imprimir_sur_casilla(tablero.c[i][j]);
 		}
 		//printf("|\n");
-		printf("║\n");
+		printf("%c\n", (char)186);
 	}
 	for(j=0;j<col;j++) {
 		//printf("+---");
-		if(j==0) {
-			printf("╚═══");
-		} else {
-			printf("╩═══");
+			if(j==0) {
+				printf("%c%c%c%c", (char)200, (char)205,(char)205,(char)205);
+			} else {
+				printf("%c%c%c%c", (char)202, (char)205,(char)205,(char)205);
+			}
+		}
+	//printf("+");
+	printf("%c", (char)188);
+
+
+	printf("\n\nTiempo transcurrido: %.2lf",tiempo_transcurrido());
+}
+
+void pista(t_tablero *tablero, char c, int n, char c2, int n2) {
+	double t=tiempo_transcurrido();
+	if(tablero->pistas!=0) {
+		if(tablero->c[n][(int)c-'A'].n==-1) {
+			printf("\nCasilla vacia");
+		} else if (c==c2 && n==n2) {
+			printf("\nPosicion correcta de %c%d -> %c%d", c,n, (char)tablero->c[n][(int)c-'A'].co + 'A' ,tablero->c[n][(int)c-'A'].fo);
+		}
+		tablero->pistas--;
+	} else printf("\nNo te quedan pistas");
+	printf("\nPistas restantes: %d", tablero->pistas);
+	while(t+2>tiempo_transcurrido());
+}
+
+void resolver_tablero(t_tablero *tablero) {
+	int i,j,y;
+	t_casilla aux;
+	int fil,col;
+	double t;
+
+	for(fil=0;fil<tablero->size;fil++) {
+		for(col=0;col<tablero->size;col++) {
+			//Search element
+			y=0;
+			for(i=0;i<tablero->max_f; i++) {
+				if(y==0) {
+					for(j=0;j<tablero->max_c;j++) {
+						//printf("\nfil %d col %d i%d j%d",fil,col,i,j);
+						if (tablero->c[i][j].co == col && tablero->c[i][j].fo == fil && y==0) {
+							//Swap element
+							aux=tablero->c[i][j];
+							tablero->c[i][j]=tablero->c[fil][col];
+							tablero->c[fil][col]=aux;
+							system("cls");
+							printf("\nCasilla %c%d a posicion %c%d\n\n",(char)j+'A',i,(char)col+'A',fil);
+							imprimir_tablero(*tablero);
+							t=tiempo_transcurrido();
+							//Delay to show the changes
+							while(t==tiempo_transcurrido());
+							y=1;
+						}
+					}
+				}
+			}
 		}
 	}
-	//printf("+");
-	printf("╝");
-	printf("\n\nTiempo transcurrido: %.2lf",tiempo_transcurrido());
-
-
+	system("cls");
 }
 
 void realizar_jugada(t_tablero *tablero) {
@@ -260,30 +324,40 @@ void realizar_jugada(t_tablero *tablero) {
 
 	No olvidar pedir al usuario las casillas a intercambiar, comprobar que sean correctos
 	(En caso de los chars mirar que el char sea menor o igual a 'A'+tablero->size) e
-	intercambiarlas después.
+	intercambiarlas después.*/
+	int numero1,numero2;
+	char letra1,letra2;
+	printf("\n\nSeleccione movimiento [ej: A0B1]: ");
+	scanf("%c%d%c%d%*c", &letra1,&numero1, &letra2, &numero2);
 
-	*/
+	if(letra1<='z' && letra1 >='a')letra1-=32;
+	if(letra2<='z' && letra2 >='a')letra2-=32;
 
-	/*if(letra1==letra2 && numero1==numero2) {
-		pista(tablero, letra1, numero1);
+	while((letra1>('A'+tablero->max_c) || letra2>('A'+tablero->max_c) || numero1>tablero->max_f-1 || numero2>tablero->max_f-1) && (letra1!='Z' && letra2!='Z')) {
+		printf("\nDatos incorrectos. Seleccione movimiento [ej: A0B1]:");
+		scanf("%c%d%c%d%*c", &letra1,&numero1, &letra2, &numero2);
+
+		if(letra1<='z' && letra1 >='a')letra1-=32;
+		if(letra2<='z' && letra2 >='a')letra2-=32;
+
 	}
 
-	/*
 
-	if((letra1=='z' || letra1 == 'Z') && (letra2=='z' || letra2=='Z')) {
+	if((letra1==letra2 && numero1==numero2) || (tablero->c[numero1][(int)letra1-'A'].n==-1)) {
+		if((letra1=='z' || letra1 == 'Z') && (letra2=='z' || letra2=='Z')) {
 		resolver_tablero(tablero);
+		}else {
+			pista(tablero, letra1, numero1, letra2, numero2);
+		}
+	}else {
+		intercambiar_casillas(&(tablero->c[numero1][(int)letra1-'A']), &(tablero->c[numero2][(int)letra2-'A']));
 	}
-	*/
+
+
+
 }
 
-/*
-void pista(t_tablero *tablero, char c, int n) {
-	if(tablero->pistas!=0) {
-		printf("\nPosicion correcta de %c%d -> %c%d", c,n, (char)tablero->c[n][c].co + 'A' ,tablero->c[n][c].fo);
-		tablero->pistas--;
-	} else printf("\nNo te quedan pistas");
-}
-*/
+
 
 int esta_resuelto(t_tablero tablero) {
 	/* Víctor
@@ -307,43 +381,5 @@ int esta_resuelto(t_tablero tablero) {
 
 }
 
-void resolver_tablero(t_tablero *tablero) {
-	int i,j,y;
-	t_casilla aux;
-	int fil,col;
-	int start=0;
-
-	if(tablero->tipo == 'D' || tablero->tipo == 'd') start=tablero->size;
-
-
-	for(fil=0;fil<tablero->size;fil++) {
-		for(col=0;col<tablero->size;col++) {
-			//Search element
-			y=0;
-			for(i=0;i<tablero->max_f; i++) {
-				if(y==0) {
-					for(j=0;j<tablero->max_c;j++) {
-						//printf("\nfil %d col %d i%d j%d",fil,col,i,j);
-						if (tablero->c[i][j].co == col && tablero->c[i][j].fo == fil && y==0) {
-							//Swap element
-							aux=tablero->c[i][j];
-							tablero->c[i][j]=tablero->c[fil][col];
-							tablero->c[fil][col]=aux;
-							system("cls");
-							printf("\nCasilla %c%d a posicion %c%d\n\n",(char)j+'A',i,(char)col+'A',fil);
-							imprimir_tablero(*tablero);
-							double t=tiempo_transcurrido();
-							//Delay to show the changes
-							while(t==tiempo_transcurrido());
-							y=1;
-						}
-					}
-				}
-			}
-		}
-	}
-
-
-}
 
 

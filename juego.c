@@ -60,15 +60,15 @@ main() {
 		while (!esta_resuelto(tablero)) {
 			realizar_jugada(&tablero);
 			//Erase cmd shell on unix
-			system("clear");
+			//system("clear");
 			//Erase cmd shell on windows
-			//system("cls");
+			system("cls");
 			imprimir_tablero(tablero);
 		}
 
 		printf("\nPuzzle resuelto!!!\n");
 
-		printf("\n\nMenu:\n1.Volver a jugar\n2.Salir");
+		printf("\n\nMenu:\n1.Volver a jugar\n2.Salir\n");
 		scanf("%u%*c",&opcion_menu);
 
 		while (opcion_menu<1 || opcion_menu>2) {
