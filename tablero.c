@@ -122,7 +122,7 @@ void inicializar_tablero(t_tablero *tablero) {
 	printf("\nTamaño del tablero (entre 2 y 6): ");
 	scanf("%d%*c", &tablero->size);
 
-	while(tablero->size<0 || tablero->size > 6) {
+	while(tablero->size<2 || tablero->size > 6) {
 	  	printf("\nTamañno incorrecto, vuelva a introducirlo (min 2, max 6): ");
 	  	scanf("%d%*c", &tablero->size);
 	}
@@ -196,8 +196,8 @@ void imprimir_tablero(t_tablero tablero) {
 
 	int i,j;
 	printf("\n");
+
 	for (i=0;i<fil;i++) {
-		//Imprimimos letras
 		//Imprimimos letras
 		if(i==0) {
 			for(j=0;j<col;j++) {
@@ -218,7 +218,7 @@ void imprimir_tablero(t_tablero tablero) {
 				printf("╬═══");
 			}
 		}
-		//printf("+\n");
+
 		if(i==0) {
 			printf("╗\n");
 		} else {
@@ -229,7 +229,6 @@ void imprimir_tablero(t_tablero tablero) {
 		for(j=0;j<col;j++) {
 			imprimir_norte_casilla(tablero.c[i][j]);
 		}
-		//printf("|\n");
 		printf("║\n");
 
 		//Imprimimos centro tablero
@@ -243,18 +242,16 @@ void imprimir_tablero(t_tablero tablero) {
 		for(j=0;j<col;j++) {
 			imprimir_sur_casilla(tablero.c[i][j]);
 		}
-		//printf("|\n");
 		printf("║\n");
+
 	}
 	for(j=0;j<col;j++) {
-		//printf("+---");
 		if(j==0) {
 			printf("╚═══");
 		} else {
 			printf("╩═══");
 		}
 	}
-	//printf("+");
 	printf("╝");
 	printf("\n\nTiempo transcurrido: %.2lf",tiempo_transcurrido());
 
