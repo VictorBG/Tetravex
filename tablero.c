@@ -174,7 +174,6 @@ void inicializar_tablero(t_tablero *tablero) {
 	empieza_tiempo();
 }
 
-
 void imprimir_tablero(t_tablero tablero) {
 	/* +---(4)
 	   |\0/
@@ -190,7 +189,7 @@ void imprimir_tablero(t_tablero tablero) {
 		col=fil;
 	} else {
 		fil=tablero.max_f;
-		col=tablero.max_c;
+		col=fil*2;
 	}
 	//Letra a mostrar
 	char c='A';
@@ -198,6 +197,7 @@ void imprimir_tablero(t_tablero tablero) {
 	int i,j;
 	printf("\n");
 	for (i=0;i<fil;i++) {
+		//Imprimimos letras
 		//Imprimimos letras
 		if(i==0) {
 			for(j=0;j<col;j++) {
@@ -209,20 +209,20 @@ void imprimir_tablero(t_tablero tablero) {
 		for(j=0;j<col;j++) {
 			//printf("+---");
 			if(j==0 && i==0) {
-				printf("%c%c%c%c", (char)201, (char)205,(char)205,(char)205);
+				printf("╔═══");
 			} else  if (j==0) {
-				printf("%c%c%c%c", (char)204, (char)205,(char)205,(char)205);
+				printf("╠═══");
 			} else if (i==0) {
-				printf("%c%c%c%c", (char)203, (char)205,(char)205,(char)205);
+				printf("╦═══");
 			} else {
-				printf("%c%c%c%c", (char)206, (char)205,(char)205,(char)205);
+				printf("╬═══");
 			}
 		}
 		//printf("+\n");
 		if(i==0) {
-			printf("%c\n", (char)187);
+			printf("╗\n");
 		} else {
-			printf("%c\n", (char)185);
+			printf("╣\n");
 		}
 
 		//Imprimimos norte tablero
@@ -230,36 +230,39 @@ void imprimir_tablero(t_tablero tablero) {
 			imprimir_norte_casilla(tablero.c[i][j]);
 		}
 		//printf("|\n");
-		printf("%c\n", (char)186);
+		printf("║\n");
 
 		//Imprimimos centro tablero
 		for(j=0;j<col;j++) {
 			imprimir_centro_casilla(tablero.c[i][j]);
 		}
 		//printf("|  %d\n",i);
-		printf("%c  %d\n", (char)186, i);
+		printf("║  %d\n", i);
 
 		//Imprimimos sur tablero
 		for(j=0;j<col;j++) {
 			imprimir_sur_casilla(tablero.c[i][j]);
 		}
 		//printf("|\n");
-		printf("%c\n", (char)186);
+		printf("║\n");
 	}
 	for(j=0;j<col;j++) {
 		//printf("+---");
-			if(j==0) {
-				printf("%c%c%c%c", (char)200, (char)205,(char)205,(char)205);
-			} else {
-				printf("%c%c%c%c", (char)202, (char)205,(char)205,(char)205);
-			}
+		if(j==0) {
+			printf("╚═══");
+		} else {
+			printf("╩═══");
 		}
+	}
 	//printf("+");
-	printf("%c", (char)188);
-
-
+	printf("╝");
 	printf("\n\nTiempo transcurrido: %.2lf",tiempo_transcurrido());
+
+
 }
+
+
+
 
 void pista(t_tablero *tablero, char c, int n, char c2, int n2) {
 	double t=tiempo_transcurrido();
@@ -339,7 +342,6 @@ void realizar_jugada(t_tablero *tablero) {
 
 		if(letra1<='z' && letra1 >='a')letra1-=32;
 		if(letra2<='z' && letra2 >='a')letra2-=32;
-
 	}
 
 

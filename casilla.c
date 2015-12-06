@@ -1,38 +1,35 @@
 #include <stdio.h>
-//#include "colores.h"
+#include "colores.h"
 #include "casilla.h"
 
 void color(int x) {
-	//printf_color(x);
+	printf_color(x);
 	if(x==(-1)) {
 		printf(" ");
 	}else {
 		printf("%d",x);
 	}
-	//printf_reset_color();
+	printf_reset_color();
 }
 
+
 void imprimir_norte_casilla(t_casilla cas) {
-	printf("%c\\", (char)186);
+	printf("║\\");
 	color(cas.n);
-	//printf("%d",cas.n);
 	printf("/");
 
 }
 
 void imprimir_centro_casilla(t_casilla cas) {
-	printf("%c", (char)186);
-	//printf("%d",cas.o);
+	printf("║");
 	color(cas.o);
-	printf("%c", (char)88);
-	//printf("%d",cas.e);
+	printf("X");
 	color(cas.e);
 }
 
 void imprimir_sur_casilla(t_casilla cas) {
-	printf("%c/", (char)186);
+	printf("║/");
 	color(cas.s);
-	//printf("%d",cas.s);
 	printf("\\");
 }
 
