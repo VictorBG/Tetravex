@@ -107,9 +107,6 @@ void inicializar_tablero(t_tablero *tablero) {
 	inicializar_azar();
 	int i,j;
 
-	tablero->resolver=1;
-	tablero->tiempo=0;
-
 	for(i=0;i<6;i++) {
 		for (j=0;j<12;j++) {
 			tablero->c[i][j].n=-1;
@@ -122,35 +119,22 @@ void inicializar_tablero(t_tablero *tablero) {
 	}
 
 	//Preguntamos dimension
-	char dimension[100];
-	char size;
-	//Preguntamos dimension
-	do {
-		printf("\nTamaño del tablero (entre 2 y 6): ");
-		gets(dimension);
-		if (strlen(dimension)==1) {
-			size=dimension[0];
-			size-='0';
-		}else size=0;
-	}while(size<2 || size > 6);
+	printf("\nTamaño del tablero (entre 2 y 6): ");
+	scanf("%d%*c", &tablero->size);
 
-	tablero->size=size;
+	while(tablero->size<2 || tablero->size > 6) {
+	  	printf("\nTamañno incorrecto, vuelva a introducirlo (min 2, max 6): ");
+	  	scanf("%d%*c", &tablero->size);
+	}
 
-	char tipo[100];
-	char t;
-	do {
-		printf("\nTablero doble o simple (Simple[s] o Doble[d]): ");
-		gets(tipo);
-		if(strlen(tipo)==1) {
-			t=tipo[0];
-		}else t='F';
+	printf("\nTablero doble o simple (Simple[s] o Doble[d]): ");
+	scanf("%c%*c", &tablero->tipo);
 
-	}while(t != 's' && t!= 'S'
-		&& t!='d' && t!='D');
-
-	tablero->tipo=t;
-
-
+	while (tablero->tipo != 's' && tablero->tipo!= 'S'
+		&& tablero->tipo!='d' && tablero->tipo!='D') {
+		printf("\nVariable incorrecta, vuelva a introducirla (Simple[s] o Doble[d]): ");
+	  	scanf("%c%*c", &tablero->tipo);
+	}
 
 	//Inicializamos variables
 	tablero->pistas=tablero->size*tablero->size/5;
@@ -184,14 +168,7 @@ void inicializar_tablero(t_tablero *tablero) {
 	crear_tablero(tablero);
 	desorganize(tablero);
 	tablero_doble(tablero);
-}
-
-mostrar_tiempo(t_tablero t) {
-	int sec,min,hour;
-	hour=(int)(tiempo_transcurrido()+t.tiempo)/3600;
-	min=(int)(tiempo_transcurrido()+t.tiempo)/60;
-	sec=(int)(tiempo_transcurrido()+t.tiempo)-hour*3600-min*60;
-	printf("\nTiempo transcurrido %.2d h:%.2d m:%.2d s",hour,min,sec);
+	empieza_tiempo();
 }
 
 void imprimir_tablero(t_tablero tablero) {
@@ -209,13 +186,14 @@ void imprimir_tablero(t_tablero tablero) {
 		col=fil;
 	} else {
 		fil=tablero.max_f;
-		col=tablero.max_c;
+		col=fil*2;
 	}
 	//Letra a mostrar
 	char c='A';
 
 	int i,j;
 	printf("\n");
+
 	for (i=0;i<fil;i++) {
 		//Imprimimos letras
 		if(i==0) {
@@ -228,55 +206,51 @@ void imprimir_tablero(t_tablero tablero) {
 		for(j=0;j<col;j++) {
 			//printf("+---");
 			if(j==0 && i==0) {
-				printf("%c%c%c%c", (char)201, (char)205,(char)205,(char)205);
+				printf("╔═══");
 			} else  if (j==0) {
-				printf("%c%c%c%c", (char)204, (char)205,(char)205,(char)205);
+				printf("╠═══");
 			} else if (i==0) {
-				printf("%c%c%c%c", (char)203, (char)205,(char)205,(char)205);
+				printf("╦═══");
 			} else {
-				printf("%c%c%c%c", (char)206, (char)205,(char)205,(char)205);
+				printf("╬═══");
 			}
 		}
-		//printf("+\n");
+
 		if(i==0) {
-			printf("%c\n", (char)187);
+			printf("╗\n");
 		} else {
-			printf("%c\n", (char)185);
+			printf("╣\n");
 		}
 
 		//Imprimimos norte tablero
 		for(j=0;j<col;j++) {
 			imprimir_norte_casilla(tablero.c[i][j]);
 		}
-		//printf("|\n");
-		printf("%c\n", (char)186);
+		printf("║\n");
 
 		//Imprimimos centro tablero
 		for(j=0;j<col;j++) {
 			imprimir_centro_casilla(tablero.c[i][j]);
 		}
 		//printf("|  %d\n",i);
-		printf("%c  %d\n", (char)186, i);
+		printf("║  %d\n", i);
 
 		//Imprimimos sur tablero
 		for(j=0;j<col;j++) {
 			imprimir_sur_casilla(tablero.c[i][j]);
 		}
-		//printf("|\n");
-		printf("%c\n", (char)186);
+		printf("║\n");
+
 	}
 	for(j=0;j<col;j++) {
-		//printf("+---");
-			if(j==0) {
-				printf("%c%c%c%c", (char)200, (char)205,(char)205,(char)205);
-			} else {
-				printf("%c%c%c%c", (char)202, (char)205,(char)205,(char)205);
-			}
+		if(j==0) {
+			printf("╚═══");
+		} else {
+			printf("╩═══");
 		}
-	//printf("+");
-	printf("%c", (char)188);
-	mostrar_tiempo(tablero);
-	printf("\n\n");
+	}
+	printf("╝");
+	printf("\n\nTiempo transcurrido: %.2lf",tiempo_transcurrido());
 
 
 }
@@ -305,7 +279,6 @@ void resolver_tablero(t_tablero *tablero) {
 	int i,j,y;
 	int fil,col;
 	double t;
-	tablero->resolver=1;
 
 	for(fil=0;fil<tablero->size;fil++) {
 		for(col=0;col<tablero->size;col++) {
@@ -316,7 +289,7 @@ void resolver_tablero(t_tablero *tablero) {
 					for(j=0;j<tablero->max_c;j++) {
 						if (tablero->c[i][j].co == col && tablero->c[i][j].fo == fil && y==0) {
 							//Swap element
-							intercambiar_casillas(&tablero->c[i][j], &tablero->c[fil][col]);
+							intercambiar_casillas(tablero->c[i][j], tablero->c[fil][col]);
 							system("cls");
 							printf("\nCasilla %c%d a posicion %c%d\n\n",(char)j+'A',i,(char)col+'A',fil);
 							imprimir_tablero(*tablero);
@@ -331,26 +304,6 @@ void resolver_tablero(t_tablero *tablero) {
 		}
 	}
 	system("cls");
-}
-
-void guardar_tablero(t_tablero *t) {
-	FILE *fp;
-	int i,j, size;
-	double tiempo;
-
-	fp=fopen("partida_guardada.txt", "w+");
-	if(fp!=NULL) {
-		fprintf(fp,"%d:%d:%d:%c:%d:%lf\n", t->size, t->max_f,t->max_c,t->tipo,t->pistas, tiempo_transcurrido());//falta h m y s
-		for(i=0;i<6;i++) {
-			for (j=0;j<12;j++) {
-				fprintf(fp,"%d:%d:%d:%d:%d:%d\n", t->c[i][j].n,t->c[i][j].s,t->c[i][j].o,t->c[i][j].e,t->c[i][j].fo,t->c[i][j].co);
-			}
-		}
-		fclose(fp);
-		printf("\nPartida guardada");
-		tiempo=tiempo_transcurrido();
-		while(tiempo==tiempo_transcurrido());//Bucle de 1 segundo
-	}
 }
 
 void realizar_jugada(t_tablero *tablero) {
@@ -369,52 +322,36 @@ void realizar_jugada(t_tablero *tablero) {
 	(En caso de los chars mirar que el char sea menor o igual a 'A'+tablero->size) e
 	intercambiarlas después.*/
 
-	char movimiento[100];
-	char numero1,letra1,letra2,numero2;
-	int repetir;
-	int col=tablero->max_c-1;
-	int fil=tablero->max_f-1;
+	int numero1,numero2;
+	char letra1,letra2;
+	printf("\n\nSeleccione movimiento [ej: A0B1]: ");
+	scanf("%c%d%c%d%*c", &letra1,&numero1, &letra2, &numero2);
 
-	do {
-		printf("\nSeleccione movimiento [ej: A0B1, s1s1 para guardar]: ");
-		gets(movimiento);
+	if(letra1<='z' && letra1 >='a')letra1-=32;
+	if(letra2<='z' && letra2 >='a')letra2-=32;
 
-		repetir=1;
-		if(strlen(movimiento)==4) {
-			numero1=movimiento[1];
-			numero2=movimiento[3];
-			letra1=movimiento[0];
-			letra2=movimiento[2];
-			numero1-='0';
-			numero2-='0';
+	while((letra1>('A'+tablero->max_c) || letra2>('A'+tablero->max_c) || numero1>tablero->max_f-1 || numero2>tablero->max_f-1) && (letra1!='Z' && letra2!='Z')) {
+		printf("\nDatos incorrectos. Seleccione movimiento [ej: A0B1]:");
+		scanf("%c%d%c%d%*c", &letra1,&numero1, &letra2, &numero2);
 
-			if(letra1<='z' && letra1 >='a')letra1-=32;
-			if(letra2<='z' && letra2 >='a')letra2-=32;
-
-			if(letra1-'A'<col && (numero1>=0 && numero1<fil) && (numero2>=0 && numero2<fil)
-				&& (letra2-'A'<col))repetir=0;
-
-			if(letra1=='S' && letra2=='S')repetir=0;
-
-			if(letra1=='Z' && letra2=='Z')repetir=0;
-		} else repetir=1;
-
-	}while(repetir);
+		if(letra1<='z' && letra1 >='a')letra1-=32;
+		if(letra2<='z' && letra2 >='a')letra2-=32;
+	}
 
 
-	if((letra1==letra2 && numero1==numero2) || (tablero->c[numero1][letra1-'A'].n==-1) || (letra1=='S' && letra2=='S')) {
-		if(letra1 == 'Z' && letra2=='Z') {
-			resolver_tablero(tablero);
-		}else if (letra1=='S' && letra2=='S') {
-			guardar_tablero(tablero);
-		}else{
+	if((letra1==letra2 && numero1==numero2) || (tablero->c[numero1][(int)letra1-'A'].n==-1)) {
+		if((letra1=='z' || letra1 == 'Z') && (letra2=='z' || letra2=='Z')) {
+		resolver_tablero(tablero);
+		}else {
 			pista(tablero, letra1, numero1, letra2, numero2);
 		}
 	}else {
-		intercambiar_casillas(&(tablero->c[numero1][letra1-'A']), &(tablero->c[numero2][letra2-'A']));
+		intercambiar_casillas(&(tablero->c[numero1][(int)letra1-'A']), &(tablero->c[numero2][(int)letra2-'A']));
 	}
-}
 
+
+
+}
 
 
 
@@ -438,3 +375,6 @@ int esta_resuelto(t_tablero tablero) {
 	}
 	return 1;
 }
+
+
+

@@ -19,7 +19,9 @@ typedef struct {
 	int	max_c;	// Col max: si  (size==3 && tipo=='d') max_c = 5
                         //          si (size==3 && tipo=='s') max_c=2
 	t_casilla	c[MAX_SIZE][2*MAX_SIZE];
+	double tiempo;
 	int	pistas;	// Pistas que quedan
+	int resolver;
 } t_tablero;
 
 // Una fila siempre tiene que estar dentro del rango [0..max_f]

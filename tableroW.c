@@ -95,25 +95,21 @@ void imprimir_tablero(t_tablero tablero) {
 
 
 void imprimir_norte_casilla(t_casilla cas) {
-	printf("%c\\", (char)186);
+	printf("║\\");
 	color(cas.n);
-	//printf("%d",cas.n);
 	printf("/");
 
 }
 
 void imprimir_centro_casilla(t_casilla cas) {
-	printf("%c", (char)186);
-	//printf("%d",cas.o);
+	printf("║");
 	color(cas.o);
-	printf("%c", (char)88);
-	//printf("%d",cas.e);
+	printf("X");
 	color(cas.e);
 }
 
 void imprimir_sur_casilla(t_casilla cas) {
-	printf("%c/", (char)186);
+	printf("║/");
 	color(cas.s);
-	//printf("%d",cas.s);
 	printf("\\");
 }
